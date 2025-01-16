@@ -1,7 +1,10 @@
+import { Evaluation } from "./pages";
+
 function App() {
   return (
     <div className="App">
-      <h1>APP COMPONENT</h1>
+      <Evaluation />
+      <h1>السلام عليكم ورحمة الله</h1>
     </div>
   );
 }

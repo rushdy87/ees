@@ -11,7 +11,12 @@ const Header = () => {
         <h1>نظام تقييم الموظفين</h1>
         <h2>شعبة الاستلام والتجهيز</h2>
       </div>
-      <div className="header-links"></div>
+      <div className="header-links">
+        <div className="header_links_pages"></div>
+        <div className="header-logout">
+          <h3>Logout</h3>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,11 +1,11 @@
-import { Header, Information } from "../../components";
+import { EvaluationComponent, Header } from "../../components";
 import "./Evaluation.scss";
 
 const Evaluation = () => {
   return (
     <div>
       <Header />
-      <Information />
+      <EvaluationComponent />
     </div>
   );
 };

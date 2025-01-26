@@ -1,33 +1,36 @@
 import "./Information.scss";
 
-const Information = () => {
+const Information = ({ units, total, percentages, evaluations }) => {
   return (
     <div className="information-container">
       <div className="information-unit-name">
-        <h2>unit 45</h2>
+        <h2>
+          الوحدات
+          {units.map((unit) => unit)}
+        </h2>
         <div className="information-_row">
           <span> الكادر</span>
-          <span>22</span>
+          <span>{total}</span>
         </div>
       </div>
       <div className="information-percentage">
         <div className="information-_row">
           <span>ممتاز</span>
-          <span>5</span>
+          <span>{percentages.a}</span>
           <span>الباقي</span>
-          <span>5</span>
+          <span>{evaluations.a}</span>
         </div>
         <div className="information-_row">
           <span>جيد جداً</span>
-          <span>8</span>
+          <span>{percentages.b}</span>
           <span>الباقي</span>
-          <span>8</span>
+          <span>{evaluations.b}</span>
         </div>
         <div className="information-_row">
           <span>جيد</span>
-          <span>9</span>
+          <span>{percentages.c}</span>
           <span>الباقي</span>
-          <span>9</span>
+          <span>{evaluations.c}</span>
         </div>
       </div>
     </div>

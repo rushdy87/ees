@@ -1,0 +1,65 @@
+.EvaluationTable_component {
+  overflow: auto;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .EvaluationTable_table {
+    border: 1px solid #dededf;
+    height: 100%;
+    width: 90%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    text-align: right;
+
+    caption {
+      caption-side: top;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .EvaluationTable_header {
+      border: 2px solid #dededf;
+      background-color: #bde4ff;
+      font-weight: bold;
+    }
+
+    .EvaluationTable_row {
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+
+    th,
+    td {
+      color: #000000;
+      padding: 5px;
+      text-align: center;
+    }
+  }
+
+  .EvaluationTable_order {
+    width: 5%;
+  }
+  .EvaluationTable_name {
+    width: 20%;
+  }
+  .EvaluationTable_fileNumber {
+    width: 10%;
+  }
+  .EvaluationTable_unit {
+    width: 10%;
+  }
+  .EvaluationTable_shift {
+    width: 10%;
+  }
+  .EvaluationTable_evaluation {
+    width: 10%;
+  }
+  .EvaluationTable_save {
+    width: 10%;
+  }
+}

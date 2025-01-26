@@ -24,17 +24,12 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-    h2 {
-      font-size: 1.2rem;
-      font-weight: 500;
-    }
   }
 
   .header-links {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }

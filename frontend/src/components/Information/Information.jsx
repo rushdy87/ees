@@ -3,33 +3,36 @@ import "./Information.scss";
 const Information = ({ units, total, percentages, evaluations }) => {
   return (
     <div className="information-container">
-      <div className="information-unit-name">
-        <h2>
-          الوحدات
-          {units.map((unit) => unit)}
-        </h2>
-        <div className="information-_row">
-          <span> الكادر</span>
+      <div className="information-unit-name_and_total">
+        <div className="information-unit-name">
+          <h2>الوحدات</h2>
+          {units.map((unit) => (
+            <span key={unit}>unit</span>
+          ))}
+        </div>
+        <div className="information-unit-total">
+          <h2> الكادر</h2>
           <span>{total}</span>
         </div>
       </div>
+
       <div className="information-percentage">
-        <div className="information-_row">
-          <span>ممتاز</span>
+        <div className="information-percentage_row">
+          <h2>ممتاز</h2>
           <span>{percentages.a}</span>
-          <span>الباقي</span>
+          <h2>الباقي</h2>
           <span>{evaluations.a}</span>
         </div>
-        <div className="information-_row">
-          <span>جيد جداً</span>
+        <div className="information-percentage_row">
+          <h2>جيد جداً</h2>
           <span>{percentages.b}</span>
-          <span>الباقي</span>
+          <h2>الباقي</h2>
           <span>{evaluations.b}</span>
         </div>
-        <div className="information-_row">
-          <span>جيد</span>
+        <div className="information-percentage_row">
+          <h2>جيد</h2>
           <span>{percentages.c}</span>
-          <span>الباقي</span>
+          <h2>الباقي</h2>
           <span>{evaluations.c}</span>
         </div>
       </div>

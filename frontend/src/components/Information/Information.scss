@@ -1,48 +1,62 @@
+@use "../../styles/variables.scss" as *;
 .information-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   margin: 2rem 4rem;
   height: 80px;
 
-  .information-unit-name {
+  .information-unit-name_and_total {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    width: 260px;
     height: 100%;
-    border: 2px solid #000000;
-    border-radius: 5px;
-    padding: 10px;
+    width: 100%;
+    border: 2px solid black;
 
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
+    .information-unit-name,
+    .information-unit-total {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 5px;
     }
   }
+
   .information-percentage {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    width: 260px;
+    width: 100%;
     height: 100%;
     border: 2px solid #000000;
     border-radius: 5px;
     padding: 10px;
   }
 
-  .information-_row {
+  .information-percentage_row {
     display: flex;
     flex-direction: row;
-    width: 250px;
     gap: 10px;
 
-    span {
+    h2 {
       width: 55px;
-      font-weight: 500;
+    }
+  }
+
+  @include breakpoint(md) {
+    .information-container {
+      height: 200px;
+    }
+
+    .information-percentage_row h2 {
+      width: 100px;
     }
   }
 }

@@ -4,6 +4,7 @@ import "./EvaluationComponent.scss";
 import { getCurrentMonth, getCurrentYear, months } from "../../assets/dates";
 import { employees } from "../../assets/data";
 import EvaluationTable from "../EvaluationTable/EvaluationTable";
+import Select from "../Select/Select";
 
 const EvaluationComponent = () => {
   const percentages = findPercentages(employees.length);
@@ -26,32 +27,30 @@ const EvaluationComponent = () => {
   }
 
   return (
-    <div className="EvaluationComponent-container">
+    <div className="evaluationComponent-container">
       <Information
         units={units}
         total={employees.length}
         percentages={percentages}
         evaluations={evaluations}
       />
-      <div className="EvaluationComponent_month_year">
-        <div className="EvaluationComponent_month">
-          <span>الشهر</span>
-          <select
+      <div className="evaluationComponent_year_month">
+        <div className="evaluationComponent_year">
+          <h2>السنة</h2>
+          <span>{getCurrentYear()}</span>
+        </div>
+        <div className="evaluationComponent_month">
+          <h2>الشهر</h2>
+          <Select
             name="month"
             id="month"
-            defaultValue={month}
+            value={month}
             onChange={(e) => setMonth(e.target.value)}
-          >
-            {Object.entries(months).map(([key, value]) => (
-              <option key={key} value={key}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="EvaluationComponent_year">
-          <span>السنة</span>
-          <span>{getCurrentYear()}</span>
+            options={Object.entries(months).map(([key, value]) => ({
+              value: key,
+              label: value,
+            }))}
+          />
         </div>
       </div>
       <EvaluationTable

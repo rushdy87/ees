@@ -7,7 +7,7 @@ const Information = ({ units, total, percentages, evaluations }) => {
         <div className="information-unit-name">
           <h2>الوحدات</h2>
           {units.map((unit) => (
-            <span key={unit}>unit</span>
+            <span key={unit}>{unit}</span>
           ))}
         </div>
         <div className="information-unit-total">

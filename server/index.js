@@ -2,15 +2,29 @@ const express = require("express");
 require("dotenv").config();
 
 const sequelize = require("./config/db");
-const User = require("./models/users");
 
-const PORT = process.env.PORT || 3030;
+const { UnitsRoutes } = require("./routes");
+const { errorHandling, unsupportedRoutes } = require("./middlewares");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
+app.use(express.json());
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+  next();
 });
+
+app.use("/api/v1/units", UnitsRoutes);
+
+app.use(unsupportedRoutes);
+
+app.use(errorHandling);
 
 sequelize
   // .sync({ force: true })

@@ -24,18 +24,10 @@ const Unit = sequelize.define(
       type: DataTypes.STRING(30), // New column for unit grouping
       allowNull: false,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
   },
   {
     tableName: "units",
-    timestamps: false,
+    timestamps: true,
   }
 );
 

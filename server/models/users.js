@@ -37,18 +37,10 @@ const User = sequelize.define(
     //   },
     //   onDelete: "CASCADE",
     // },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
   },
   {
     tableName: "users",
-    timestamps: false,
+    timestamps: true,
   }
 );
 

@@ -43,19 +43,10 @@ const Employee = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
   },
   {
     tableName: "employees",
-    timestamps: false,
+    timestamps: true,
   }
 );
 

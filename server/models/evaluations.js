@@ -34,7 +34,7 @@ const Evaluation = sequelize.define(
   },
   {
     tableName: "evaluations",
-    timestamps: false,
+    timestamps: true,
   }
 );
 

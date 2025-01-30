@@ -25,18 +25,10 @@ const EvaluationRule = sequelize.define(
       type: DataTypes.INTEGER, // Percentage for 70-79 range
       allowNull: true,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
   },
   {
     tableName: "evaluationRules",
-    timestamps: false,
+    timestamps: true,
   }
 );
 

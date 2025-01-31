@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 const sequelize = require("../config/db.js");
+const { rolesType } = require("../constants/roles.js");
 
 const Role = sequelize.define(
   "Role",
@@ -10,9 +11,10 @@ const Role = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.ENUM("Root", "Manager", "Admin", "Engineer"),
+    type: {
+      type: DataTypes.ENUM(...rolesType),
       allowNull: false,
+      unique: true,
     },
     permissions: {
       type: DataTypes.JSON,

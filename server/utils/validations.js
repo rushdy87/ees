@@ -1,14 +1,16 @@
+const { rolesType } = require("../constants/roles");
+
 const validateInput = (input, fields, next) => {
   for (const field of fields) {
     if (!input[field]) {
-      return handleError(
-        next,
-        `Invalid input data: ${field} is required.`,
-        400
-      );
+      return false;
     }
   }
   return true;
 };
 
-module.exports = { validateInput };
+const validateRoleType = (type) => {
+  return rolesType.includes(type);
+};
+
+module.exports = { validateInput, validateRoleType };

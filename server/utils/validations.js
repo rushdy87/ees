@@ -1,6 +1,6 @@
 const { rolesType } = require("../constants/roles");
 
-const validateInput = (input, fields, next) => {
+const validateInput = (input, fields) => {
   for (const field of fields) {
     if (!input[field]) {
       return false;

@@ -1,5 +1,11 @@
 const { handleError, handleSuccessResponse } = require("../utils");
-const { findUnitById, findAllUnits, addUnit } = require("../utils/units");
+const {
+  findUnitById,
+  findAllUnits,
+  addUnit,
+  isHaveValidName,
+  isUnitNameExist,
+} = require("../utils/units");
 const { validateInput } = require("../utils/validations");
 
 exports.getUnitById = async (req, res, next) => {
@@ -12,14 +18,9 @@ exports.getUnitById = async (req, res, next) => {
       return handleError(next, `Unit with id ${id} not found`, 404);
     }
 
-    return handleSuccessResponse(res, unit, "Unit found");
+    handleSuccessResponse(res, unit, "Unit found");
   } catch (error) {
-    return handleError(
-      next,
-      "An error occurred while fetching the unit",
-      500,
-      error
-    );
+    handleError(next, "An error occurred while fetching the unit", 500, error);
   }
 };
 
@@ -31,26 +32,29 @@ exports.getAllUnits = async (req, res, next) => {
       return handleError(next, "No units available", 404);
     }
 
-    return handleSuccessResponse(res, units, "Units retrieved successfully");
+    handleSuccessResponse(res, units, "Units retrieved successfully");
   } catch (error) {
-    return handleError(
-      next,
-      "An error occurred while fetching the units",
-      500,
-      error
-    );
+    handleError(next, "An error occurred while fetching the units", 500, error);
   }
 };
 
 exports.createUnit = async (req, res, next) => {
-  const { name, symbol, unit_group } = req.body;
-
-  if (!validateInput(req.body, ["name", "symbol", "unit_group"], next)) {
-    return handleError(next, "Invalid input data", 400);
-  }
-
   try {
-    const unit = await addUnit({ name, symbol, unit_group });
+    const { name, unit_group } = req.body.data;
+
+    if (!validateInput(req.body.data, ["name", "unit_group"])) {
+      return handleError(next, "Invalid input data", 400);
+    }
+
+    if (!isHaveValidName(name)) {
+      return handleError(next, `The Unit name "${name}" is not valid`, 400);
+    }
+
+    if (await isUnitNameExist(name)) {
+      return handleError(next, `The Unit name "${name}" already exists`, 400);
+    }
+
+    const unit = await addUnit({ name, unit_group });
 
     return handleSuccessResponse(res, unit, "Unit created successfully", 201);
   } catch (error) {
@@ -64,20 +68,24 @@ exports.createUnit = async (req, res, next) => {
 };
 
 exports.updateUnit = async (req, res, next) => {
-  const { id } = req.params;
-  const updates = req.body;
-
   try {
-    const unit = await findUnitById(id);
+    const { id } = req.params;
+    const { data } = req.body;
 
-    if (!unit) {
-      return handleError(next, `Unit with id ${id} not found`, 404);
+    if (data.name && !isHaveValidName(data.name)) {
+      return handleError(
+        next,
+        `The Unit name "${data.name}" is not valid`,
+        400
+      );
     }
 
-    // Apply updates
-    Object.assign(unit, updates);
+    const unit = await findUnitById(id);
+    if (!unit) {
+      return handleError(next, `Unit with ID ${id} not found`, 404);
+    }
 
-    await unit.save();
+    await unit.update(data);
 
     return handleSuccessResponse(
       res,
@@ -106,17 +114,8 @@ exports.deleteUnit = async (req, res, next) => {
 
     await unit.destroy();
 
-    return handleSuccessResponse(
-      res,
-      null,
-      `Unit ${unit.name} deleted successfully`
-    );
+    handleSuccessResponse(res, null, `Unit ${unit.name} deleted successfully`);
   } catch (error) {
-    return handleError(
-      next,
-      "An error occurred while deleting the unit",
-      500,
-      error
-    );
+    handleError(next, "An error occurred while deleting the unit", 500, error);
   }
 };

@@ -2,11 +2,11 @@
   "name": "ees",
   "version": "1.0.0",
   "description": "Employees Evaluation System API ",
-  "main": "server/index.js",
+  "main": "server/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server/index.js",
-    "start": "node server/index.js"
+    "dev": "nodemon server/app.js",
+    "start": "node server/app.js"
   },
   "repository": {
     "type": "git",

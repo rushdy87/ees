@@ -13,7 +13,6 @@ const Employee = sequelize.define(
     name: {
       type: DataTypes.STRING(60),
       allowNull: false,
-      unique: true,
     },
     employee_number: {
       type: DataTypes.STRING(10),
@@ -25,11 +24,11 @@ const Employee = sequelize.define(
       allowNull: true,
     },
 
-    unit: {
+    unit_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: "Units",
+        model: "units",
         key: "id",
       },
       onDelete: "CASCADE",
@@ -49,5 +48,8 @@ const Employee = sequelize.define(
     timestamps: true,
   }
 );
+
+const Unit = require("./units");
+Employee.belongsTo(Unit, { foreignKey: "unit_id", as: "unit" });
 
 module.exports = Employee;

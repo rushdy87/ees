@@ -1,4 +1,3 @@
-const Unit = require("../models/units");
 const { handleError, handleSuccessResponse } = require("../utils");
 const { findUnitById, findAllUnits, addUnit } = require("../utils/units");
 const { validateInput } = require("../utils/validations");

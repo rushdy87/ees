@@ -3,7 +3,12 @@ require("dotenv").config();
 
 const sequelize = require("./config/db");
 
-const { UnitsRoutes, RolesRoutes, employeesRoutes } = require("./routes");
+const {
+  UnitsRoutes,
+  RolesRoutes,
+  employeesRoutes,
+  usersRoutes,
+} = require("./routes");
 const { errorHandling, unsupportedRoutes } = require("./middlewares");
 
 const app = express();
@@ -23,6 +28,7 @@ app.use((req, res, next) => {
 app.use("/api/v1/units", UnitsRoutes);
 app.use("/api/v1/roles", RolesRoutes);
 app.use("/api/v1/employees", employeesRoutes);
+app.use("/api/v1/users", usersRoutes);
 
 app.use(unsupportedRoutes);
 

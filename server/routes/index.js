@@ -1,11 +1,13 @@
-const UnitsRoutes = require("./units.js");
-const RolesRoutes = require("./roles.js");
-const employeesRoutes = require("./employees.js");
-const usersRoutes = require("./users.js");
+const UnitsRoutes = require("./units");
+const RolesRoutes = require("./roles");
+const employeesRoutes = require("./employees");
+const usersRoutes = require("./users");
+const evaluationsRoutes = require("./evaluations");
 
 module.exports = {
   UnitsRoutes,
   RolesRoutes,
   employeesRoutes,
   usersRoutes,
+  evaluationsRoutes,
 };

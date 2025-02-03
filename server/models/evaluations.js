@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 const sequelize = require("../config/db.js");
+const Employee = require("./employees.js");
 
 const Evaluation = sequelize.define(
   "Evaluation",
@@ -14,7 +15,7 @@ const Evaluation = sequelize.define(
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: "Employees",
+        model: "employees",
         key: "id",
       },
       onDelete: "SET NULL",
@@ -37,5 +38,7 @@ const Evaluation = sequelize.define(
     timestamps: true,
   }
 );
+
+Evaluation.belongsTo(Employee, { foreignKey: "employee_id", as: "employee" });
 
 module.exports = Evaluation;

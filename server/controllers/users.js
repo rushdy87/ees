@@ -39,6 +39,10 @@ exports.getAllUsers = async (req, res, next) => {
 };
 
 exports.createUser = async (req, res, next) => {
+  if (!req.body.data) {
+    return handleError(next, "Invalid input data", 400);
+  }
+
   const { data } = req.body;
 
   if (
@@ -82,6 +86,11 @@ exports.createUser = async (req, res, next) => {
 
 exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
+
+  if (!req.body.data) {
+    return handleError(next, "Invalid input data", 400);
+  }
+
   const { data } = req.body;
 
   try {

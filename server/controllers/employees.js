@@ -52,6 +52,10 @@ exports.getEmployeeById = async (req, res, next) => {
 };
 
 exports.createEmployee = async (req, res, next) => {
+  if (!req.body.data) {
+    return handleError(next, "Missing required fields", 400);
+  }
+
   const { data } = req.body;
 
   if (!validateInput(data, ["name", "employee_number", "unit_id"], next)) {
@@ -86,6 +90,10 @@ exports.createEmployee = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res, next) => {
   const { id } = req.params;
+
+  if (!req.body.data) {
+    return handleError(next, "Missing required fields", 400);
+  }
   const { data } = req.body;
 
   try {

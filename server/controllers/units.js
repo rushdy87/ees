@@ -40,6 +40,10 @@ exports.getAllUnits = async (req, res, next) => {
 
 exports.createUnit = async (req, res, next) => {
   try {
+    if (!req.body.data) {
+      return handleError(next, "Invalid input data", 400);
+    }
+
     const { name, unit_group } = req.body.data;
 
     if (!validateInput(req.body.data, ["name", "unit_group"])) {
@@ -70,6 +74,11 @@ exports.createUnit = async (req, res, next) => {
 exports.updateUnit = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    if (!req.body.data) {
+      return handleError(next, "Invalid input data", 400);
+    }
+
     const { data } = req.body;
 
     if (data.name && !isHaveValidName(data.name)) {

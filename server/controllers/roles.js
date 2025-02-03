@@ -48,10 +48,13 @@ exports.getRoleById = async (req, res, next) => {
 };
 
 exports.createRole = async (req, res, next) => {
-  const { type, permissions } = req.body;
+  if (!req.body.data) {
+    return handleError(next, "Missing required fields", 400);
+  }
+  const { type, permissions } = req.body.data;
 
   if (
-    !validateInput(req.body, ["type", "permissions"], next) ||
+    !validateInput(req.body.data, ["type", "permissions"], next) ||
     !validateRoleType(type)
   ) {
     return handleError(next, "Invalid input data", 400);
@@ -78,9 +81,12 @@ exports.createRole = async (req, res, next) => {
 
 exports.updateRole = async (req, res, next) => {
   const { id } = req.params;
-  const { permissions } = req.body;
+  if (!req.body.data) {
+    return handleError(next, "Missing required fields", 400);
+  }
+  const { permissions } = req.body.data;
 
-  if (!validateInput(req.body, ["permissions"], next)) {
+  if (!validateInput(req.body.data, ["permissions"], next)) {
     return handleError(next, "Invalid input data", 400);
   }
 

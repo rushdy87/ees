@@ -9,6 +9,7 @@ const {
   employeesRoutes,
   usersRoutes,
   evaluationsRoutes,
+  evaluationRulesRoutes,
 } = require("./routes");
 const { errorHandling, unsupportedRoutes } = require("./middlewares");
 
@@ -31,6 +32,7 @@ app.use("/api/v1/roles", RolesRoutes);
 app.use("/api/v1/employees", employeesRoutes);
 app.use("/api/v1/users", usersRoutes);
 app.use("/api/v1/evaluations", evaluationsRoutes);
+app.use("/api/v1/evaluation-rules", evaluationRulesRoutes);
 
 app.use(unsupportedRoutes);
 

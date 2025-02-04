@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db.js");
+const Unit = require("./units.js"); // Import Unit model
 
 const EvaluationRule = sequelize.define(
   "EvaluationRule",
@@ -9,20 +10,16 @@ const EvaluationRule = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    unit_group: {
-      type: DataTypes.STRING, // A comma-separated string for unit groups
-      allowNull: false,
-    },
     range_90_93: {
-      type: DataTypes.INTEGER, // Percentage for 90-93 range
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     range_80_89: {
-      type: DataTypes.INTEGER, // Percentage for 80-89 range
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     range_70_79: {
-      type: DataTypes.INTEGER, // Percentage for 70-79 range
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
   },
@@ -31,5 +28,20 @@ const EvaluationRule = sequelize.define(
     timestamps: true,
   }
 );
+
+// Define Many-to-Many Relationship
+EvaluationRule.belongsToMany(Unit, {
+  through: "EvaluationRuleUnits", // Junction table
+  foreignKey: "evaluationRule_id",
+  otherKey: "unit_id",
+  as: "units",
+});
+
+Unit.belongsToMany(EvaluationRule, {
+  through: "EvaluationRuleUnits",
+  foreignKey: "unit_id",
+  otherKey: "evaluationRule_id",
+  as: "evaluationRules",
+});
 
 module.exports = EvaluationRule;

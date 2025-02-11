@@ -4,39 +4,47 @@ const Unit = require("../models/units");
 
 const findUnitById = async (id) => {
   const unit = await Unit.findByPk(id, {
-    attributes: ["id", "name", "symbol", "evaluationRule_id"], // Select only necessary fields
+    attributes: ["id", "name", "symbol", "evaluationRule_id"],
   });
 
-  if (!unit) {
-    return null;
-  }
+  if (!unit) return null;
 
-  let rule = await EvaluationRule.findByPk(unit.evaluationRule_id);
-
-  if (!rule) {
-    rule = defaultMonthlyEvaluationRule;
-  }
+  const rule = unit.evaluationRule_id
+    ? await EvaluationRule.findByPk(unit.evaluationRule_id)
+    : defaultMonthlyEvaluationRule;
 
   return { id: unit.id, name: unit.name, symbol: unit.symbol, rule };
 };
 
 const findAllUnits = async () => {
-  return await Unit.findAll();
+  const units = await Unit.findAll({
+    attributes: ["id", "name", "symbol", "evaluationRule_id"],
+  });
+
+  const ruleIds = [
+    ...new Set(units.map((u) => u.evaluationRule_id).filter(Boolean)),
+  ];
+  const rules = await EvaluationRule.findAll({ where: { id: ruleIds } });
+
+  const ruleMap = rules.reduce(
+    (acc, rule) => ({ ...acc, [rule.id]: rule }),
+    {}
+  );
+
+  return units.map((unit) => ({
+    id: unit.id,
+    name: unit.name,
+    symbol: unit.symbol,
+    rule: ruleMap[unit.evaluationRule_id] || defaultMonthlyEvaluationRule,
+  }));
 };
 
 const isHaveValidSymbol = (symbol) =>
   units.some((unit) => unit.symbol === symbol);
 
 const isUnitSymbolExist = async (symbol) => {
-  if (!symbol) {
-    return false;
-  }
-
-  const unit = await Unit.findOne({
-    where: { symbol },
-  });
-
-  return !!unit;
+  if (!symbol) return false;
+  return !!(await Unit.findOne({ where: { symbol } }));
 };
 
 const addUnit = async ({ symbol, evaluationRule_id = null }) => {

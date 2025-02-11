@@ -14,7 +14,9 @@ exports.getUnitById = async (req, res, next) => {
   try {
     const unit = await findUnitById(id);
 
-    if (!unit) return handleError(next, `Unit with ID ${id} not found`, 404);
+    if (!unit) {
+      return handleError(next, `Unit with ID ${id} not found`, 404);
+    }
 
     handleSuccessResponse(res, unit, "Unit found");
   } catch (error) {
@@ -27,7 +29,7 @@ exports.getAllUnits = async (req, res, next) => {
   try {
     const units = await findAllUnits();
 
-    if (!units || units.length === 0) {
+    if (units.length === 0) {
       return handleError(next, "No units available", 404);
     }
 
@@ -39,34 +41,26 @@ exports.getAllUnits = async (req, res, next) => {
 
 exports.createUnit = async (req, res, next) => {
   try {
-    if (!req.body.data) {
+    const { data } = req.body;
+    if (!data || !validateInput(data, ["symbol"])) {
       return handleError(next, "Invalid input data", 400);
     }
 
-    const { symbol, evaluationRule_id } = req.body.data;
-
-    if (!validateInput(req.body.data, ["symbol"])) {
-      return handleError(next, "Invalid input data", 400);
+    if (!isHaveValidSymbol(data.symbol)) {
+      return handleError(next, `Invalid unit symbol: ${data.symbol}`, 400);
+    }
+    if (await isUnitSymbolExist(data.symbol)) {
+      return handleError(
+        next,
+        `Unit symbol "${data.symbol}" already exists`,
+        400
+      );
     }
 
-    if (!isHaveValidSymbol(symbol)) {
-      return handleError(next, `The Unit symbol "${symbol}" is not valid`, 400);
-    }
-
-    if (await isUnitSymbolExist(symbol)) {
-      return handleError(next, `The Unit with "${symbol}" already exists`, 400);
-    }
-
-    const unit = await addUnit({ symbol, evaluationRule_id });
-
-    return handleSuccessResponse(res, unit, "Unit created successfully", 201);
+    const unit = await addUnit(data);
+    handleSuccessResponse(res, unit, "Unit created successfully", 201);
   } catch (error) {
-    return handleError(
-      next,
-      "An error occurred while creating the unit",
-      500,
-      error
-    );
+    handleError(next, "Error creating unit", 500, error);
   }
 };
 
@@ -80,10 +74,10 @@ exports.updateUnit = async (req, res, next) => {
 
     const { data } = req.body;
 
-    if (data.name && !isHaveValidName(data.name)) {
+    if (data.symbol && !isHaveValidSymbol(data.symbol)) {
       return handleError(
         next,
-        `The Unit name "${data.name}" is not valid`,
+        `The Unit symbol "${data.symbol}" is not valid`,
         400
       );
     }

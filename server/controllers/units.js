@@ -3,8 +3,8 @@ const {
   findUnitById,
   findAllUnits,
   addUnit,
-  isHaveValidName,
-  isUnitNameExist,
+  isHaveValidSymbol,
+  isUnitSymbolExist,
 } = require("../utils/units");
 const { validateInput } = require("../utils/validations");
 
@@ -14,12 +14,11 @@ exports.getUnitById = async (req, res, next) => {
   try {
     const unit = await findUnitById(id);
 
-    if (!unit) {
-      return handleError(next, `Unit with id ${id} not found`, 404);
-    }
+    if (!unit) return handleError(next, `Unit with ID ${id} not found`, 404);
 
     handleSuccessResponse(res, unit, "Unit found");
   } catch (error) {
+    console.log(error);
     handleError(next, "An error occurred while fetching the unit", 500, error);
   }
 };
@@ -44,21 +43,21 @@ exports.createUnit = async (req, res, next) => {
       return handleError(next, "Invalid input data", 400);
     }
 
-    const { name, unit_group } = req.body.data;
+    const { symbol, evaluationRule_id } = req.body.data;
 
-    if (!validateInput(req.body.data, ["name", "unit_group"])) {
+    if (!validateInput(req.body.data, ["symbol"])) {
       return handleError(next, "Invalid input data", 400);
     }
 
-    if (!isHaveValidName(name)) {
-      return handleError(next, `The Unit name "${name}" is not valid`, 400);
+    if (!isHaveValidSymbol(symbol)) {
+      return handleError(next, `The Unit symbol "${symbol}" is not valid`, 400);
     }
 
-    if (await isUnitNameExist(name)) {
-      return handleError(next, `The Unit name "${name}" already exists`, 400);
+    if (await isUnitSymbolExist(symbol)) {
+      return handleError(next, `The Unit with "${symbol}" already exists`, 400);
     }
 
-    const unit = await addUnit({ name, unit_group });
+    const unit = await addUnit({ symbol, evaluationRule_id });
 
     return handleSuccessResponse(res, unit, "Unit created successfully", 201);
   } catch (error) {

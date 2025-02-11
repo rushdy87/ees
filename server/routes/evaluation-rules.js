@@ -1,4 +1,8 @@
-const { getEvaluationRuleById } = require("../controllers/evaluation-rules");
+const {
+  getEvaluationRuleById,
+  getAllRules,
+  createRule,
+} = require("../controllers/evaluation-rules");
 
 const router = require("express").Router();
 
@@ -6,5 +10,11 @@ const router = require("express").Router();
 
 // GET get rule by id
 router.get("/:id", getEvaluationRuleById);
+
+// GET get all rules
+router.get("/", getAllRules);
+
+// POST create a rule
+router.post("/", createRule);
 
 module.exports = router;

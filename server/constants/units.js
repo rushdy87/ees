@@ -9,4 +9,10 @@ const units = [
   { name: "Administration", symbol: "adm" },
 ];
 
-module.exports = { units };
+const defaultMonthlyEvaluationRule = {
+  range_90_93: 25,
+  range_80_89: 35,
+  range_70_79: 40,
+};
+
+module.exports = { units, defaultMonthlyEvaluationRule };

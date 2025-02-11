@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-
 const sequelize = require("../config/db.js");
+const EvaluationRule = require("./evaluation-rules.js"); // Import EvaluationRule model
 
 const Unit = sequelize.define(
   "Unit",
@@ -16,13 +16,19 @@ const Unit = sequelize.define(
       unique: true,
     },
     symbol: {
-      type: DataTypes.STRING(3), //u45, u52, u53, u54, u90, hfo, adm
+      type: DataTypes.STRING(3), // Example: u45, u52, hfo, adm
       allowNull: false,
       unique: true,
     },
-    unit_group: {
-      type: DataTypes.STRING(30), // New column for unit grouping
-      allowNull: false,
+    evaluationRule_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: EvaluationRule, // ✅ Set FK Reference
+        key: "id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "SET NULL", // If rule is deleted, keep unit but set FK to NULL
     },
   },
   {
@@ -30,5 +36,11 @@ const Unit = sequelize.define(
     timestamps: true,
   }
 );
+
+// ✅ Define Relationship
+Unit.belongsTo(EvaluationRule, {
+  foreignKey: "evaluationRule_id",
+  as: "evaluationRule",
+});
 
 module.exports = Unit;

@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db.js");
-const Unit = require("./units.js"); // Import Unit model
 
 const EvaluationRule = sequelize.define(
   "EvaluationRule",
@@ -12,15 +11,15 @@ const EvaluationRule = sequelize.define(
     },
     range_90_93: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
     range_80_89: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
     range_70_79: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
   },
   {
@@ -29,19 +28,5 @@ const EvaluationRule = sequelize.define(
   }
 );
 
-// Define Many-to-Many Relationship
-EvaluationRule.belongsToMany(Unit, {
-  through: "EvaluationRuleUnits", // Junction table
-  foreignKey: "evaluationRule_id",
-  otherKey: "unit_id",
-  as: "units",
-});
-
-Unit.belongsToMany(EvaluationRule, {
-  through: "EvaluationRuleUnits",
-  foreignKey: "unit_id",
-  otherKey: "evaluationRule_id",
-  as: "evaluationRules",
-});
-
+// ✅ Export the Model
 module.exports = EvaluationRule;

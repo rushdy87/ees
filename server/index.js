@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 
 const sequelize = require("./config/database");
+
 const { errorHandling, unsupportedRoutes } = require("./middlewares");
 
 const app = express();
@@ -20,12 +21,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/api", (req, res, next) => {
-  res.send("Hello World");
-});
+const { UnitsRoutes } = require("./routes");
+app.use("/api/v1/units", UnitsRoutes);
 
 app.use(unsupportedRoutes);
-
 app.use(errorHandling);
 
 sequelize

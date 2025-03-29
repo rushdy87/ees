@@ -5,15 +5,13 @@ const isRequestDataValid = (data, fields) => {
   return fields.every((field) => data[field]);
 };
 
-const isUnitHaveAValidNameAndSymbol = (name, symbol) => {
-  if (!name || !symbol) return false;
-  const unit = units.find(
-    (unit) => unit.name === name && unit.symbol === symbol
-  );
+const isUnitHaveAValidSymbol = (symbol) => {
+  if (!symbol) return false;
+  const unit = units.find((unit) => unit.symbol === symbol);
   return unit ? true : false;
 };
 
 module.exports = {
   isRequestDataValid,
-  isUnitHaveAValidNameAndSymbol,
+  isUnitHaveAValidSymbol,
 };

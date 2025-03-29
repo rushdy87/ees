@@ -14,7 +14,7 @@ const {
 } = require("../../utils/response_handlers");
 const {
   isRequestDataValid,
-  isUnitHaveAValidNameAndSymbol,
+  isUnitHaveAValidSymbol,
 } = require("../../utils/validations");
 
 exports.getUnitById = async (req, res, next) => {
@@ -59,18 +59,18 @@ exports.getAllUnits = async (req, res, next) => {
 };
 
 exports.createUnit = async (req, res, next) => {
-  const { name, symbol } = req.body.data;
+  const { symbol } = req.body.data;
 
-  if (!isRequestDataValid(req.body.data, ["name", "symbol"])) {
+  if (!isRequestDataValid(req.body.data, ["symbol"])) {
     return handleError(
       next,
-      "Invalid request data. Please provide name and symbol",
+      "Invalid request data. Please provide unit symbol",
       400
     );
   }
 
-  if (!isUnitHaveAValidNameAndSymbol(name, symbol)) {
-    return handleError(next, "Invalid inputs [symbol or name]", 400);
+  if (!isUnitHaveAValidSymbol(symbol)) {
+    return handleError(next, "Invalid inputs symbol", 400);
   }
 
   try {
@@ -84,13 +84,8 @@ exports.createUnit = async (req, res, next) => {
       );
     }
 
-    existingUnit = await findUnitByName(name);
-    if (existingUnit) {
-      return handleError(next, `Unit with name (${name}) already exists.`, 400);
-    }
-
     // create new unit
-    const unit = await addUnit(name, symbol);
+    const unit = await addUnit(symbol);
     if (!unit) {
       return handleError(
         next,
@@ -111,17 +106,18 @@ exports.createUnit = async (req, res, next) => {
 
 exports.editUnit = async (req, res, next) => {
   const { id } = req.params;
-  const { name, symbol } = req.body.data;
+  const { symbol } = req.body.data;
 
-  if (!isRequestDataValid(req.body.data, ["name", "symbol"])) {
+  if (!isRequestDataValid(req.body.data, ["symbol"])) {
     return handleError(
       next,
-      "Invalid request data. Please provide name and symbol",
+      "Invalid request data. Please provide unit symbol",
       400
     );
   }
-  if (!isUnitHaveAValidNameAndSymbol(name, symbol)) {
-    return handleError(next, "Invalid inputs [symbol or name]", 400);
+
+  if (!isUnitHaveAValidSymbol(symbol)) {
+    return handleError(next, "Invalid inputs symbol", 400);
   }
 
   try {
@@ -130,16 +126,16 @@ exports.editUnit = async (req, res, next) => {
       return handleError(next, `Unit with id (${id}) not found.`, 404);
     }
 
-    const duplicateUnit = await findUnitByNameOrSymbol(name, symbol, id);
+    const duplicateUnit = await findUnitByNameOrSymbol(symbol, id);
     if (duplicateUnit) {
       return handleError(
         next,
-        `Unit with name (${name}) or symbol (${symbol}) already exists.`,
+        `Unit with symbol (${symbol}) already exists.`,
         400
       );
     }
 
-    await updateUnit(id, name, symbol);
+    await updateUnit(id, symbol);
 
     handleSuccessResponse(res, unit, "Unit updated successfully", 200);
   } catch (error) {

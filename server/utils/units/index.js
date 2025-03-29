@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 
 const Unit = require("../../models/units");
+const { units } = require("../../constants/units");
 
 const findUnitById = async (id) => {
   return await Unit.findByPk(id, { attributes: ["id", "name", "symbol"] });
@@ -24,24 +25,27 @@ const findUnitByName = async (name) => {
   });
 };
 
-const findUnitByNameOrSymbol = async (name, symbol, excludeId = null) => {
+const findUnitByNameOrSymbol = async (symbol, excludeId = null) => {
   const whereCondition = excludeId ? { id: { [Op.ne]: excludeId } } : {};
   return await Unit.findOne({
     where: {
       ...whereCondition,
-      [Op.or]: [{ name }, { symbol }],
+      [Op.or]: [{ symbol }],
     },
     attributes: ["id", "name", "symbol"],
   });
 };
 
-const addUnit = async (name, symbol) => {
-  return await Unit.create({ name, symbol });
+const addUnit = async (symbol) => {
+  const unit = units.find((unit) => unit.symbol === symbol);
+  return await Unit.create(unit);
 };
 
-const updateUnit = async (id, name, symbol) => {
+const updateUnit = async (id, symbol) => {
   const unit = await findUnitById(id);
   if (!unit) return null;
+
+  const { name } = units.find((unit) => unit.symbol === symbol);
 
   await unit.update({ name, symbol });
   return unit;

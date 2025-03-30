@@ -3,7 +3,6 @@ const {
   findAllUnits,
   findUnitBySymbol,
   addUnit,
-  findUnitByName,
   updateUnit,
   destroyUnit,
   findUnitByNameOrSymbol,

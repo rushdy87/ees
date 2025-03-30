@@ -21,8 +21,9 @@ app.use((req, res, next) => {
   next();
 });
 
-const { UnitsRoutes } = require("./routes");
+const { UnitsRoutes, EmployeesRoutes } = require("./routes");
 app.use("/api/v1/units", UnitsRoutes);
+app.use("/api/v1/employees", EmployeesRoutes);
 
 app.use(unsupportedRoutes);
 app.use(errorHandling);

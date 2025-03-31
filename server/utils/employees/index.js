@@ -74,6 +74,33 @@ const destroyEmployee = async (id) => {
   return await Employee.destroy({ where: { id } }); // Returns affected rows
 };
 
+const findEmployeesByUnit = async (unit_id) => {
+  const employees = await Employee.findAll({
+    where: {
+      unit_id,
+      is_active: true,
+    },
+    attributes: [
+      "id",
+      "name",
+      "employee_number",
+      "start_work_date",
+      "shift",
+      "is_active",
+    ],
+    include: [
+      {
+        model: Unit,
+        as: "unit",
+        attributes: ["name", "symbol"],
+        required: false,
+      },
+    ],
+  });
+
+  return employees;
+};
+
 module.exports = {
   findEmployeeById,
   findAllEmployees,
@@ -81,4 +108,5 @@ module.exports = {
   addEmployee,
   editEmployee,
   destroyEmployee,
+  findEmployeesByUnit,
 };

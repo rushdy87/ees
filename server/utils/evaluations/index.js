@@ -72,3 +72,17 @@ module.exports = {
   addEvaluation,
   findEvaluationById,
 };
+
+/*
+How This Works
+The single route (GET /api/v1/evaluations)
+Based on the query parameters, it will handle all cases dynamically.
+
+Case	Query Parameters
+Fetch evaluations for all employees in a specific year and month =>	?year=2024&month=3
+Fetch evaluations for all employees in a specific year =>	?year=2024
+Fetch evaluations for one employee in a specific year and month =>	?year=2024&month=3&employee_id=123
+Fetch evaluations for one employee in a specific year =>	?year=2024&employee_id=123
+Fetch evaluations for all employees in a specific unit in a specific year and month =>	?year=2024&month=3&unit_id=5
+Fetch evaluations for all employees in a specific unit in a specific year =>	?year=2024&unit_id=5
+*/

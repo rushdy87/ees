@@ -3,6 +3,7 @@ const EmployeesRoutes = require("./employees");
 const EvaluationsRoutes = require("./evaluations");
 const RolesRoutes = require("./roles");
 const UsersRoutes = require("./users");
+const AuthRoutes = require("./auth");
 
 module.exports = {
   UnitsRoutes,
@@ -10,4 +11,5 @@ module.exports = {
   EvaluationsRoutes,
   RolesRoutes,
   UsersRoutes,
+  AuthRoutes,
 };

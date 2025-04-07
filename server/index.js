@@ -9,8 +9,6 @@ const app = express();
 
 app.use(express.json());
 
-app.use(express.json());
-
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -27,12 +25,15 @@ const {
   EvaluationsRoutes,
   RolesRoutes,
   UsersRoutes,
+  AuthRoutes,
 } = require("./routes");
+
 app.use("/api/v1/units", UnitsRoutes);
 app.use("/api/v1/employees", EmployeesRoutes);
 app.use("/api/v1/evaluations", EvaluationsRoutes);
 // app.use("/api/v1/roles", RolesRoutes);
 app.use("/api/v1/users", UsersRoutes);
+app.use("/api/v1/auth", AuthRoutes);
 
 app.use(unsupportedRoutes);
 app.use(errorHandling);

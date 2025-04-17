@@ -30,16 +30,16 @@ const User = sequelize.define(
       type: DataTypes.STRING(60),
       allowNull: false,
     },
-    // role_id: {
-    //   type: DataTypes.UUID,
-    //   allowNull: false,
-    //   references: {
-    //     model: "roles",
-    //     key: "id",
-    //   },
-    //   onDelete: "CASCADE",
-    //   onUpdate: "CASCADE",
-    // },
+    role_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: "roles",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    },
   },
   {
     tableName: "users",
@@ -49,6 +49,6 @@ const User = sequelize.define(
 
 // Define Associations
 User.belongsTo(Employee, { foreignKey: "employee_id", as: "employee" });
-// User.belongsTo(Role, { foreignKey: "role_id", as: "role" });
+User.belongsTo(Role, { foreignKey: "role_id", as: "role" });
 
 module.exports = User;

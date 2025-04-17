@@ -39,14 +39,16 @@ const findUser = async (data) => {
   });
 };
 
-const addUser = async ({ username, password, employee_id }) => {
-  if (!username || !password || !employee_id) {
+const addUser = async ({ username, password, employee_id, role_id }) => {
+  if (!username || !password || !employee_id || !role_id) {
     return null;
   }
+
   return await User.create({
     username,
     password,
     employee_id,
+    role_id,
   });
 };
 

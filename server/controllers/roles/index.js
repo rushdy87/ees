@@ -36,25 +36,3 @@ exports.getRoleById = async (req, res, next) => {
     handleError(next, "Error fetching role", 500, error);
   }
 };
-
-exports.createRole = async (req, res, next) => {
-  const { data } = req.body;
-  if (!isRequestDataValid(data, ["type", "permissions"])) {
-    return handleError(next, "Invalid request data", 400);
-  }
-
-  try {
-    const existingRole = await findRoleByType(data.type);
-    if (existingRole) {
-      return handleError(next, "Role already exists", 409);
-    }
-    const newRole = await addRole(data.type, data.permissions);
-
-    if (!newRole) {
-      return handleError(next, "Error creating role", 500);
-    }
-    handleSuccessResponse(res, newRole, "Role created successfully", 201);
-  } catch (error) {
-    handleError(next, "Error creating role", 500, error);
-  }
-};

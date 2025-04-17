@@ -31,12 +31,12 @@ const {
 
 app.use("/api/v1/auth", AuthRoutes);
 
-app.use(authenticate);
+// app.use(authenticate);
 
 app.use("/api/v1/units", UnitsRoutes);
 app.use("/api/v1/employees", EmployeesRoutes);
 app.use("/api/v1/evaluations", EvaluationsRoutes);
-// app.use("/api/v1/roles", RolesRoutes);
+app.use("/api/v1/roles", RolesRoutes);
 app.use("/api/v1/users", UsersRoutes);
 
 app.use(unsupportedRoutes);

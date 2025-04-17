@@ -14,7 +14,6 @@ const Role = sequelize.define(
     type: {
       type: DataTypes.ENUM(...rolesType),
       allowNull: false,
-      unique: true,
     },
     permissions: {
       type: DataTypes.JSON,
@@ -24,6 +23,7 @@ const Role = sequelize.define(
   {
     tableName: "roles",
     timestamps: true,
+    fields: ["type"],
   }
 );
 

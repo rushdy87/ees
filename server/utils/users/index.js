@@ -29,6 +29,13 @@ const findUserById = async (id) => {
 const findUser = async (data) => {
   return await User.findOne({
     where: data,
+    include: [
+      {
+        model: Employee, // ✅ Use Employee directly
+        as: "employee",
+        attributes: ["id", "name"],
+      },
+    ],
   });
 };
 

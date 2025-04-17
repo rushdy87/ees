@@ -1,3 +1,4 @@
+const { generateToken } = require("../../utils/jwt");
 const { verifyPassword } = require("../../utils/password");
 const {
   handleError,
@@ -33,7 +34,9 @@ exports.login = async (req, res, next) => {
 
     // TODO: Add JWT or session logic here in the future
 
-    return handleSuccessResponse(res, safeUser, "Login successful", 200);
+    const token = generateToken({ id: user.id });
+
+    return handleSuccessResponse(res, { token }, "Login successful", 200);
   } catch (error) {
     console.error(error);
     return handleError(next, "An error occurred during login", 500, error);

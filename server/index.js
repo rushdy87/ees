@@ -4,6 +4,7 @@ require("dotenv").config();
 const sequelize = require("./config/database");
 
 const { errorHandling, unsupportedRoutes } = require("./middlewares");
+const authenticate = require("./middlewares/auth");
 
 const app = express();
 
@@ -28,12 +29,15 @@ const {
   AuthRoutes,
 } = require("./routes");
 
+app.use("/api/v1/auth", AuthRoutes);
+
+app.use(authenticate);
+
 app.use("/api/v1/units", UnitsRoutes);
 app.use("/api/v1/employees", EmployeesRoutes);
 app.use("/api/v1/evaluations", EvaluationsRoutes);
 // app.use("/api/v1/roles", RolesRoutes);
 app.use("/api/v1/users", UsersRoutes);
-app.use("/api/v1/auth", AuthRoutes);
 
 app.use(unsupportedRoutes);
 app.use(errorHandling);

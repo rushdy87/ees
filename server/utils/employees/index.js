@@ -1,5 +1,6 @@
 const Employee = require("../../models/employees");
 const Unit = require("../../models/units");
+const { hasAdminPermission, whatUserCanDo } = require("../permission");
 
 const findEmployeeById = async (id) => {
   const employee = await Employee.findByPk(id, {
@@ -24,9 +25,13 @@ const findEmployeeById = async (id) => {
   return employee;
 };
 
-const findAllEmployees = async () => {
+const findAllEmployees = async (user) => {
+  const condition = await whatUserCanDo(user);
+
+  console.log(condition);
+
   const employees = await Employee.findAll({
-    where: { is_active: true },
+    where: condition,
     attributes: ["id", "name", "employee_number", "start_work_date", "shift"],
     include: [
       {

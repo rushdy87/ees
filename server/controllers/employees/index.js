@@ -6,6 +6,7 @@ const {
   editEmployee,
   destroyEmployee,
 } = require("../../utils/employees");
+const { hasPermission } = require("../../utils/permission");
 const {
   handleError,
   handleSuccessResponse,
@@ -14,6 +15,11 @@ const { isRequestDataValid } = require("../../utils/validations");
 
 exports.getEmployeeById = async (req, res, next) => {
   const { id } = req.params;
+  const { user } = req;
+
+  if (!user) {
+    return handleError(next, "User not found", 404);
+  }
 
   try {
     const employee = await findEmployeeById(id);
@@ -21,6 +27,15 @@ exports.getEmployeeById = async (req, res, next) => {
     if (!employee) {
       return handleError(next, "Employee not found", 404);
     }
+
+    if (!hasPermission(user, employee.unit.symbol, employee.shift)) {
+      return handleError(
+        next,
+        "You do not have permission to access this employee",
+        403
+      );
+    }
+
     handleSuccessResponse(res, employee, "Employee found successfully");
   } catch (error) {
     return handleError(
@@ -33,8 +48,13 @@ exports.getEmployeeById = async (req, res, next) => {
 };
 
 exports.getAllEmployees = async (req, res, next) => {
+  const { user } = req;
+  if (!user) {
+    return handleError(next, "User not found", 404);
+  }
+
   try {
-    const employees = await findAllEmployees();
+    const employees = await findAllEmployees(user);
 
     if (!employees || employees.length === 0) {
       return handleError(next, "No employees found.", 404);

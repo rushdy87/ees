@@ -29,11 +29,6 @@ exports.login = async (req, res, next) => {
       return handleError(next, "Invalid username or password", 401);
     }
 
-    // Strip password before sending back the user
-    const { password: _, ...safeUser } = user.get({ plain: true });
-
-    // TODO: Add JWT or session logic here in the future
-
     const token = generateToken({ id: user.id });
 
     return handleSuccessResponse(res, { token }, "Login successful", 200);

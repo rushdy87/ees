@@ -45,8 +45,8 @@ exports.getUserById = async (req, res, next) => {
 };
 
 exports.createUser = async (req, res, next) => {
-  const { data } = req.body;
-  const { username, password, employee_id, role_id } = data || {};
+  const data = req.body;
+  const { username, password, employee_id, role } = data || {};
 
   // Validate required fields
   if (!isRequestDataValid(data, ["username", "password", "employee_id"])) {
@@ -82,7 +82,7 @@ exports.createUser = async (req, res, next) => {
       username,
       password: hashedPassword,
       employee_id,
-      role_id,
+      role,
     });
 
     if (!newUser) {

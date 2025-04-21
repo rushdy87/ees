@@ -35,6 +35,7 @@ const authenticate = async (req, res, next) => {
     }
 
     const user = await findUserById(decoded.id);
+
     if (!user) {
       return handleError(next, "Unauthorized: User not found", 401);
     }

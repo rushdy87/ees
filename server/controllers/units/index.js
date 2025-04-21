@@ -15,9 +15,22 @@ const {
   isRequestDataValid,
   isUnitHaveAValidSymbol,
 } = require("../../utils/validations");
+const {
+  hasRootPermission,
+  hasMangerPermission,
+} = require("../../utils/permissions");
 
 exports.getUnitById = async (req, res, next) => {
   const { id } = req.params;
+  const { user } = req;
+
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
 
   try {
     // Fetch unit from database
@@ -39,6 +52,15 @@ exports.getUnitById = async (req, res, next) => {
 };
 
 exports.getAllUnits = async (req, res, next) => {
+  const { user } = req;
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
+
   try {
     const units = await findAllUnits();
 
@@ -58,9 +80,18 @@ exports.getAllUnits = async (req, res, next) => {
 };
 
 exports.createUnit = async (req, res, next) => {
-  const { symbol } = req.body.data;
+  const { symbol } = req.body;
+  const { user } = req;
 
-  if (!isRequestDataValid(req.body.data, ["symbol"])) {
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
+
+  if (!isRequestDataValid(req.body, ["symbol"])) {
     return handleError(
       next,
       "Invalid request data. Please provide unit symbol",
@@ -105,9 +136,18 @@ exports.createUnit = async (req, res, next) => {
 
 exports.editUnit = async (req, res, next) => {
   const { id } = req.params;
-  const { symbol } = req.body.data;
+  const { symbol } = req.body;
+  const { user } = req;
 
-  if (!isRequestDataValid(req.body.data, ["symbol"])) {
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
+
+  if (!isRequestDataValid(req.body, ["symbol"])) {
     return handleError(
       next,
       "Invalid request data. Please provide unit symbol",
@@ -149,6 +189,15 @@ exports.editUnit = async (req, res, next) => {
 
 exports.deleteUnit = async (req, res, next) => {
   const { id } = req.params;
+  const { user } = req;
+
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
 
   try {
     const unit = await findUnitById(id);

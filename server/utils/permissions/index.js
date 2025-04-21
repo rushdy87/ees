@@ -1,3 +1,18 @@
+function hasRootPermission(user) {
+  if (!user || !user.role) return false;
+
+  const { role } = user;
+
+  return role === "root";
+}
+function hasMangerPermission(user) {
+  if (!user || !user.role) return false;
+
+  const { role } = user;
+
+  return role === "manager";
+}
+
 function hasPermissionToRead(user, unit = "", shift = "") {
   if (!user || !user.role) return false;
 
@@ -35,6 +50,8 @@ function hasPermissionToUpdate(user) {
 }
 
 module.exports = {
+  hasRootPermission,
+  hasMangerPermission,
   hasPermissionToRead,
   hasPermissionToCreate,
   hasPermissionToUpdate,

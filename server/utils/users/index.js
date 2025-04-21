@@ -29,7 +29,7 @@ const findUserById = async (id) => {
             {
               model: Unit,
               as: "unit",
-              attributes: ["symbol"],
+              attributes: ["id"],
             },
           ],
         },
@@ -42,7 +42,7 @@ const findUserById = async (id) => {
       id: user.id,
       username: user.username,
       name: user.employee.name,
-      UnitSymbol: user.employee.unit.symbol,
+      unit: user.employee.unit.id,
       shift: user.employee.shift,
       is_active: user.employee.is_active,
       role: user.role,
@@ -66,8 +66,8 @@ const findUser = async (data) => {
   });
 };
 
-const addUser = async ({ username, password, employee_id, role_id }) => {
-  if (!username || !password || !employee_id || !role_id) {
+const addUser = async ({ username, password, employee_id, role }) => {
+  if (!username || !password || !employee_id || !role) {
     return null;
   }
 
@@ -75,7 +75,7 @@ const addUser = async ({ username, password, employee_id, role_id }) => {
     username,
     password,
     employee_id,
-    role_id,
+    role,
   });
 };
 

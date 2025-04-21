@@ -15,7 +15,7 @@ const findEmployeeById = async (id) => {
       {
         model: Unit,
         as: "unit",
-        attributes: ["id", "name", "symbol"],
+        attributes: ["name", "symbol"],
         required: false,
       },
     ],
@@ -24,16 +24,10 @@ const findEmployeeById = async (id) => {
   return employee;
 };
 
-const findAllEmployees = async (unit, shift) => {
+const findAllEmployees = async (user) => {
   const condition = {
     is_active: true,
   };
-  if (unit) {
-    condition.unit_id = unit;
-  }
-  if (shift) {
-    condition.shift = shift;
-  }
 
   const employees = await Employee.findAll({
     where: condition,

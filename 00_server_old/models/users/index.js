@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 const Employee = require("../employees");
+const Role = require("../roles");
 
 const User = sequelize.define(
   "User",
@@ -29,9 +30,15 @@ const User = sequelize.define(
       type: DataTypes.STRING(60),
       allowNull: false,
     },
-    role: {
-      type: DataTypes.ENUM("root", "manager", "admin", "engineer"),
+    role_id: {
+      type: DataTypes.UUID,
       allowNull: false,
+      references: {
+        model: "roles",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     },
   },
   {
@@ -42,5 +49,6 @@ const User = sequelize.define(
 
 // Define Associations
 User.belongsTo(Employee, { foreignKey: "employee_id", as: "employee" });
+User.belongsTo(Role, { foreignKey: "role_id", as: "role" });
 
 module.exports = User;

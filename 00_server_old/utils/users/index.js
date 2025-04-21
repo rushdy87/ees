@@ -2,6 +2,7 @@ const User = require("../../models/users");
 
 const Employee = require("../../models/employees"); // ✅ Import Employee model
 const Unit = require("../../models/units");
+const Role = require("../../models/roles");
 
 const findAllUsers = async () => {
   return await User.findAll({
@@ -19,7 +20,7 @@ const findUserById = async (id) => {
   try {
     const user = await User.findOne({
       where: { id },
-      attributes: ["id", "username", "role"],
+      attributes: ["id", "username"],
       include: [
         {
           model: Employee,
@@ -29,9 +30,14 @@ const findUserById = async (id) => {
             {
               model: Unit,
               as: "unit",
-              attributes: ["symbol"],
+              attributes: ["id"],
             },
           ],
+        },
+        {
+          model: Role,
+          as: "role",
+          attributes: ["type"],
         },
       ],
     });
@@ -42,10 +48,10 @@ const findUserById = async (id) => {
       id: user.id,
       username: user.username,
       name: user.employee.name,
-      UnitSymbol: user.employee.unit.symbol,
+      unit: user.employee.unit.id,
       shift: user.employee.shift,
       is_active: user.employee.is_active,
-      role: user.role,
+      roleType: user.role.type,
     };
   } catch (error) {
     console.error("Error in findUserById:", error);

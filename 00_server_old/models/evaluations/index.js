@@ -1,9 +1,10 @@
 const { DataTypes } = require("sequelize");
+
 const sequelize = require("../../config/database");
 const Employee = require("../employees");
 
-const User = sequelize.define(
-  "User",
+const Evaluation = sequelize.define(
+  "Evaluation",
   {
     id: {
       type: DataTypes.UUID,
@@ -12,35 +13,32 @@ const User = sequelize.define(
     },
     employee_id: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "employees",
         key: "id",
       },
       onDelete: "SET NULL",
-      onUpdate: "CASCADE",
     },
-    username: {
-      type: DataTypes.STRING(30),
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING(60),
+    year: {
+      type: DataTypes.STRING(4),
       allowNull: false,
     },
-    role: {
-      type: DataTypes.ENUM("root", "manager", "admin", "engineer"),
+    month: {
+      type: DataTypes.STRING(4),
+      allowNull: false,
+    },
+    score: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
   {
-    tableName: "users",
+    tableName: "evaluations",
     timestamps: true,
   }
 );
 
-// Define Associations
-User.belongsTo(Employee, { foreignKey: "employee_id", as: "employee" });
+Evaluation.belongsTo(Employee, { foreignKey: "employee_id", as: "employee" });
 
-module.exports = User;
+module.exports = Evaluation;

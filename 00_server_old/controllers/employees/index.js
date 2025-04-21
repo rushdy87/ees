@@ -6,10 +6,7 @@ const {
   editEmployee,
   destroyEmployee,
 } = require("../../utils/employees");
-const {
-  hasPermissionToRead,
-  hasPermissionToCreate,
-} = require("../../utils/permissions");
+const { hasPermission } = require("../../utils/permission");
 const {
   handleError,
   handleSuccessResponse,
@@ -31,7 +28,7 @@ exports.getEmployeeById = async (req, res, next) => {
       return handleError(next, "Employee not found", 404);
     }
 
-    if (!hasPermissionToRead(user, employee.unit.id, employee.shift)) {
+    if (!hasPermission(user, employee.unit.symbol, employee.shift)) {
       return handleError(
         next,
         "You do not have permission to access this employee",
@@ -52,22 +49,12 @@ exports.getEmployeeById = async (req, res, next) => {
 
 exports.getAllEmployees = async (req, res, next) => {
   const { user } = req;
-  const { unit, shift } = req.query;
-
   if (!user) {
     return handleError(next, "User not found", 404);
   }
 
-  if (!hasPermissionToRead(user, unit, shift)) {
-    return handleError(
-      next,
-      "You do not have permission to access this employee",
-      403
-    );
-  }
-
   try {
-    const employees = await findAllEmployees(unit, shift);
+    const employees = await findAllEmployees(user);
 
     if (!employees || employees.length === 0) {
       return handleError(next, "No employees found.", 404);
@@ -85,18 +72,11 @@ exports.getAllEmployees = async (req, res, next) => {
 };
 
 exports.createEmployee = async (req, res, next) => {
-  const data = req.body;
-  const { user } = req;
+  const { data } = req.body;
 
-  if (!hasPermissionToCreate(user)) {
-    return handleError(
-      next,
-      "You do not have permission to create an employee",
-      403
-    );
-  }
-
-  if (!isRequestDataValid(data, ["name", "employee_number", "unit_id"])) {
+  if (
+    !isRequestDataValid(req.body.data, ["name", "employee_number", "unit_id"])
+  ) {
     return handleError(
       next,
       "Invalid request data. Please input [name, employee_number, unit_id]",
@@ -136,16 +116,7 @@ exports.createEmployee = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res, next) => {
   const { id } = req.params;
-  const data = req.body;
-  const { user } = req;
-
-  if (!hasPermissionToUpdate(user)) {
-    return handleError(
-      next,
-      "You do not have permission to update an employee",
-      403
-    );
-  }
+  const { data } = req.body;
 
   if (!isRequestDataValid(data, [])) {
     return handleError(
@@ -175,17 +146,7 @@ exports.updateEmployee = async (req, res, next) => {
 exports.employeeActivation = async (req, res, next) => {
   const { id } = req.params;
 
-  const { user } = req;
-
-  if (!hasPermissionToUpdate(user)) {
-    return handleError(
-      next,
-      "You do not have permission to update an employee",
-      403
-    );
-  }
-
-  const data = req.body;
+  const { data } = req.body;
 
   if (data.state === undefined) {
     return handleError(next, "State field is required.", 400);
@@ -212,15 +173,6 @@ exports.employeeActivation = async (req, res, next) => {
 
 exports.deleteEmployee = async (req, res, next) => {
   const { id } = req.params;
-
-  const { user } = req;
-  if (!hasPermissionToUpdate(user)) {
-    return handleError(
-      next,
-      "You do not have permission to delete an employee",
-      403
-    );
-  }
 
   try {
     const deletedRows = await destroyEmployee(id);

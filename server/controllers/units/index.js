@@ -17,14 +17,14 @@ const {
 } = require("../../utils/validations");
 const {
   hasRootPermission,
-  hasMangerPermission,
+  hasManagerPermission,
 } = require("../../utils/permissions");
 
 exports.getUnitById = async (req, res, next) => {
   const { id } = req.params;
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -53,7 +53,7 @@ exports.getUnitById = async (req, res, next) => {
 
 exports.getAllUnits = async (req, res, next) => {
   const { user } = req;
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -83,7 +83,7 @@ exports.createUnit = async (req, res, next) => {
   const { symbol } = req.body;
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -139,7 +139,7 @@ exports.editUnit = async (req, res, next) => {
   const { symbol } = req.body;
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -191,7 +191,7 @@ exports.deleteUnit = async (req, res, next) => {
   const { id } = req.params;
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",

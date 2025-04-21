@@ -15,13 +15,13 @@ const {
 const { isRequestDataValid } = require("../../utils/validations");
 const {
   hasRootPermission,
-  hasMangerPermission,
+  hasManagerPermission,
 } = require("../../utils/permissions");
 
 exports.getAllUsers = async (req, res, next) => {
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -45,7 +45,7 @@ exports.getUserById = async (req, res, next) => {
   const { id } = req.params;
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -72,7 +72,7 @@ exports.createUser = async (req, res, next) => {
   const { username, password, employee_id, role } = data || {};
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -137,7 +137,7 @@ exports.updateUser = async (req, res, next) => {
   const data = req.body;
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",
@@ -178,7 +178,7 @@ exports.deleteUser = async (req, res, next) => {
   const { id } = req.params;
   const { user } = req;
 
-  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+  if (!hasRootPermission(user) && !hasManagerPermission(user)) {
     return handleError(
       next,
       "You don't have permission to access this resource.",

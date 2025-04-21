@@ -5,7 +5,7 @@ function hasRootPermission(user) {
 
   return role === "root";
 }
-function hasMangerPermission(user) {
+function hasManagerPermission(user) {
   if (!user || !user.role) return false;
 
   const { role } = user;
@@ -30,29 +30,32 @@ function hasPermissionToRead(user, unit = "", shift = "") {
   return false;
 }
 
-function hasPermissionToCreate(user) {
+function hasPermissionToModify(user) {
   if (!user || !user.role) return false;
-
-  const { role } = user;
-
-  if (["root", "manager"].includes(role)) return true;
-
-  return false;
+  return ["root", "manager"].includes(user.role);
 }
-function hasPermissionToUpdate(user) {
+
+function hasPermissionToModifyEvaluation(user, unit = "", shift = "") {
   if (!user || !user.role) return false;
 
   const { role } = user;
 
   if (["root", "manager"].includes(role)) return true;
+
+  const sameUnit = user.unit === unit;
+  const sameShift = user.shift === shift;
+
+  if (role === "admin" && sameUnit) return true;
+
+  if (role === "engineer" && sameUnit && sameShift) return true;
 
   return false;
 }
 
 module.exports = {
   hasRootPermission,
-  hasMangerPermission,
+  hasManagerPermission,
   hasPermissionToRead,
-  hasPermissionToCreate,
-  hasPermissionToUpdate,
+  hasPermissionToModify,
+  hasPermissionToModifyEvaluation,
 };

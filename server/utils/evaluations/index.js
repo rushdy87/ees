@@ -11,12 +11,12 @@ const findEvaluationById = async (id) => {
         as: "employee",
         required: true,
         where: { is_active: true },
-        attributes: ["name", "employee_number"],
+        attributes: ["name", "employee_number", "shift"],
         include: [
           {
             model: Unit,
             as: "unit",
-            attributes: ["name"],
+            attributes: ["id", "name"],
           },
         ],
       },
@@ -39,12 +39,12 @@ const findEvaluations = async ({ year, month, employee_id, unit_id }) => {
         as: "employee",
         required: true,
         where: { is_active: true, ...(unit_id ? { unit_id } : {}) },
-        attributes: ["name", "employee_number"],
+        attributes: ["name", "employee_number", "shift"],
         include: [
           {
             model: Unit,
             as: "unit",
-            attributes: ["name"],
+            attributes: ["id", "name"],
           },
         ],
       },

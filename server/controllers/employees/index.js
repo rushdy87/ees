@@ -8,7 +8,7 @@ const {
 } = require("../../utils/employees");
 const {
   hasPermissionToRead,
-  hasPermissionToCreate,
+  hasPermissionToModify,
 } = require("../../utils/permissions");
 const {
   handleError,
@@ -88,7 +88,7 @@ exports.createEmployee = async (req, res, next) => {
   const data = req.body;
   const { user } = req;
 
-  if (!hasPermissionToCreate(user)) {
+  if (!hasPermissionToModify(user)) {
     return handleError(
       next,
       "You do not have permission to create an employee",
@@ -139,7 +139,7 @@ exports.updateEmployee = async (req, res, next) => {
   const data = req.body;
   const { user } = req;
 
-  if (!hasPermissionToUpdate(user)) {
+  if (!hasPermissionToModify(user)) {
     return handleError(
       next,
       "You do not have permission to update an employee",
@@ -177,7 +177,7 @@ exports.employeeActivation = async (req, res, next) => {
 
   const { user } = req;
 
-  if (!hasPermissionToUpdate(user)) {
+  if (!hasPermissionToModify(user)) {
     return handleError(
       next,
       "You do not have permission to update an employee",
@@ -214,7 +214,7 @@ exports.deleteEmployee = async (req, res, next) => {
   const { id } = req.params;
 
   const { user } = req;
-  if (!hasPermissionToUpdate(user)) {
+  if (!hasPermissionToModify(user)) {
     return handleError(
       next,
       "You do not have permission to delete an employee",

@@ -13,8 +13,22 @@ const {
   findUserById,
 } = require("../../utils/users");
 const { isRequestDataValid } = require("../../utils/validations");
+const {
+  hasRootPermission,
+  hasMangerPermission,
+} = require("../../utils/permissions");
 
 exports.getAllUsers = async (req, res, next) => {
+  const { user } = req;
+
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
+
   try {
     const users = await findAllUsers();
     if (!users || users.length === 0) {
@@ -29,16 +43,25 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.getUserById = async (req, res, next) => {
   const { id } = req.params;
+  const { user } = req;
+
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
 
   try {
-    const user = await findUserById(id);
-    if (!user) {
+    const usr = await findUserById(id);
+    if (!usr) {
       return handleError(next, "User not found", 404);
     }
-    if (!user || user.length === 0) {
+    if (!usr || usr.length === 0) {
       return handleError(next, "No users found", 404);
     }
-    return handleSuccessResponse(res, user, "User fetched successfully", 200);
+    return handleSuccessResponse(res, usr, "User fetched successfully", 200);
   } catch (error) {
     handleError(next, "An error occurred while fetching users", 500, error);
   }
@@ -47,6 +70,15 @@ exports.getUserById = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
   const data = req.body;
   const { username, password, employee_id, role } = data || {};
+  const { user } = req;
+
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
 
   // Validate required fields
   if (!isRequestDataValid(data, ["username", "password", "employee_id"])) {
@@ -102,15 +134,24 @@ exports.createUser = async (req, res, next) => {
 
 exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
-  const { data } = req.body;
+  const data = req.body;
+  const { user } = req;
+
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
 
   if (!isRequestDataValid(data, ["password"])) {
     return handleError(next, "Invalid request data", 400);
   }
 
   try {
-    const user = await findUserById(id);
-    if (!user) {
+    const usr = await findUserById(id);
+    if (!usr) {
       return handleError(next, "User not found", 404);
     }
 
@@ -135,14 +176,23 @@ exports.updateUser = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   const { id } = req.params;
+  const { user } = req;
+
+  if (!hasRootPermission(user) && !hasMangerPermission(user)) {
+    return handleError(
+      next,
+      "You don't have permission to access this resource.",
+      403
+    );
+  }
 
   try {
-    const user = await findUserById(id);
-    if (!user) {
+    const usr = await findUserById(id);
+    if (!usr) {
       return handleError(next, "User not found", 404);
     }
 
-    await user.destroy();
+    await usr.destroy();
 
     return handleSuccessResponse(res, null, "User deleted successfully", 200);
   } catch (error) {
